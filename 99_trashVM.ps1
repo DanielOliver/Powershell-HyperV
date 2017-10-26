@@ -7,5 +7,5 @@ Param(
 
 Stop-VM -Name $vmName -TurnOff
 Remove-VM -Name $vmName -Force
-Remove-Item -Path "C:\Virtual Machines\$vmName\$vmName.vhdx"
+Remove-Item -Path "C:\Virtual Machines\$vmName" -Force
 
