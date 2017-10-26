@@ -17,3 +17,4 @@ New-VM -Name $snapshot.Name -NoVHD -MemoryStartupBytes $snapshot.MemoryStartup -
 $hardDrive = Get-ChildItem -LiteralPath "C:\Virtual Machines\snap\admin\Virtual Hard Disks\" | Where-Object { $_.Name -like "*.vhdx" }
 
 Add-VMHardDiskDrive -Path $hardDrive.FullName -VMName $snapName
+Start-VM $vmName
