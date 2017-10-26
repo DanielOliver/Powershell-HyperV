@@ -10,11 +10,11 @@ Param(
 $exportPath = "C:\Virtual Machines\$snapName"
 
 $vm = Get-VM -Name $vmName
-$snapshot = Export-VMSnapshot -VM $vm -Name $snapName $exportPath -Passthru
+$latestSnap = Get-VMSnapshot -VMName $vmName | Sort-Object CreationTime -Descending | Select-Object -First 1
+$snap = Export-VMSnapshot -VMSnapshot $latestSnap -Path $exportPath
 
-New-VM -Name $snapshot.Name -NoVHD -MemoryStartupBytes $snapshot.MemoryStartup -switch "centos"
+New-VM -Name $snapName -NoVHD -switch "centos"
 
-$hardDrive = Get-ChildItem -LiteralPath "C:\Virtual Machines\snap\admin\Virtual Hard Disks\" | Where-Object { $_.Name -like "*.vhdx" }
-
+$hardDrive = Get-ChildItem -LiteralPath "C:\Virtual Machines\$snapName\$vmName\Virtual Hard Disks\" | Where-Object { $_.Name -like "*.vhdx" }
 Add-VMHardDiskDrive -Path $hardDrive.FullName -VMName $snapName
-Start-VM $vmName
+Start-VM $snapName
